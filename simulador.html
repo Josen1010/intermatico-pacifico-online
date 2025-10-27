@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Crédito - Banco Pacifico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .simulator-wrapper {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .logo {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 25px;
+        }
+        
+        .simulator-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .simulator-title {
+            color: #1a5276;
+            font-size: 22px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .simulator-subtitle {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .btn-simulate {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to bottom, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-bottom: 10px;
+        }
+        
+        .btn-simulate:hover {
+            background: linear-gradient(to bottom, #2980b9, #2573a7);
+        }
+        
+        .result-message {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+            text-align: center;
+            display: none;
+        }
+        
+        .result-message p {
+            color: #2c3e50;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .btn-continue {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to bottom, #1a5276, #154360);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .btn-continue:hover {
+            background: linear-gradient(to bottom, #154360, #1a5276);
+        }
+        
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 480px) {
+            .simulator-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="simulator-wrapper">
+        <!-- Logo desde la carpeta -->
+        <img src="logo.png" alt="Logo" class="logo">
+        
+        <div class="simulator-container">
+            <h2 class="simulator-title">Simulador de Crédito</h2>
+            <p class="simulator-subtitle">Calcule su crédito inmediato en dólares</p>
+            
+            <form id="simulatorForm">
+                <div class="form-group">
+                    <label for="monto">Monto del crédito</label>
+                    <select id="monto">
+                        <option value="1000">$1,000 USD</option>
+                        <option value="2000">$2,000 USD</option>
+                        <option value="3000">$3,000 USD</option>
+                        <option value="4000">$4,000 USD</option>
+                        <option value="5000">$5,000 USD</option>
+                        <option value="6000">$6,000 USD</option>
+                        <option value="7000">$7,000 USD</option>
+                        <option value="8000">$8,000 USD</option>
+                        <option value="9000">$9,000 USD</option>
+                        <option value="10000">$10,000 USD</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="plazo">Plazo de pago</label>
+                    <select id="plazo">
+                        <option value="12">12 meses</option>
+                        <option value="18">18 meses</option>
+                        <option value="24">24 meses</option>
+                        <option value="30">30 meses</option>
+                        <option value="36">36 meses</option>
+                    </select>
+                </div>
+                
+                <button type="button" class="btn-simulate" onclick="simularCredito()">Simular Crédito</button>
+            </form>
+            
+            <div class="result-message" id="resultMessage">
+                <p id="messageText"></p>
+            </div>
+            
+            <button class="btn-continue" id="btnContinuar" onclick="continuar()">Continuar con la Solicitud</button>
+            
+            <div class="footer">
+                <p>© 2023 Banco Pacifico. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function simularCredito() {
+            const monto = parseInt(document.getElementById('monto').value);
+            const plazo = parseInt(document.getElementById('plazo').value);
+            
+            // Cálculo con tasa fija del 1% mensual
+            const tasaMensual = 0.01; // 1%
+            const interesTotal = monto * tasaMensual * plazo;
+            const totalPagar = monto + interesTotal;
+            
+            const messageText = `
+                Has solicitado <strong>$${monto.toLocaleString('es-MX')} USD</strong> a un plazo de <strong>${plazo} meses</strong>.<br><br>
+                Tasa de interés: <strong>1% mensual</strong><br><br>
+                El total a pagar será: <strong>$${totalPagar.toLocaleString('es-MX')} USD</strong>
+            `;
+            
+            document.getElementById('messageText').innerHTML = messageText;
+            document.getElementById('resultMessage').style.display = 'block';
+            document.getElementById('btnContinuar').style.display = 'block';
+        }
+        
+        function continuar() {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
