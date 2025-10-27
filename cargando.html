@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procesando información</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .loading-wrapper {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .logo {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 30px;
+            transition: all 30s ease-in-out;
+        }
+        
+        .logo.animate {
+            transform: scale(0.5);
+            opacity: 0.3;
+        }
+        
+        .loading-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .loading-title {
+            color: #1a5276;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .loading-subtitle {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        
+        .message {
+            color: #2c3e50;
+            font-size: 16px;
+            margin: 20px 0;
+            min-height: 24px;
+        }
+        
+        .timer {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e0e0e0;
+            border-radius: 50%;
+            border-top-color: #3498db;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-wrapper">
+        <!-- Logo desde la carpeta -->
+        <img src="logo.png" alt="Logo" class="logo">
+        
+        <div class="loading-container">
+            <div class="spinner"></div>
+            
+            <div class="loading-title">Procesando tu solicitud</div>
+            <div class="loading-subtitle">Esto puede tomar unos momentos</div>
+            
+            <div class="message" id="currentMessage">Estamos procesando tu información...</div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="timer" id="timer">Tiempo restante: 35 segundos</div>
+        </div>
+    </div>
+
+    <script>
+        // Duración total de la carga en milisegundos
+        const totalTime = 35000; // 35 segundos
+        const startTime = Date.now();
+        
+        // Elementos DOM
+        const progressBar = document.getElementById('progressBar');
+        const timer = document.getElementById('timer');
+        const currentMessage = document.getElementById('currentMessage');
+        const logo = document.querySelector('.logo');
+        
+        // Mensajes en orden
+        const messages = [
+            { text: "Estamos procesando tu información...", time: 0 },
+            { text: "Generando tu solicitud...", time: 10000 },    // 10 segundos
+            { text: "Validando tus credenciales...", time: 20000 }, // 20 segundos
+            { text: "Necesitamos validar! Redirigiendo...", time: 30000 }  // 30 segundos
+        ];
+        
+        // Función para actualizar progreso
+        function updateProgress() {
+            const now = Date.now();
+            const elapsed = now - startTime;
+            const progress = Math.min((elapsed / totalTime) * 100, 100);
+            
+            // Actualizar barra de progreso
+            progressBar.style.width = progress + '%';
+            
+            // Actualizar temporizador
+            const remaining = Math.ceil((totalTime - elapsed) / 1000);
+            timer.textContent = `Tiempo restante: ${remaining} segundos`;
+            
+            // Cambiar mensajes según el tiempo
+            for (let i = messages.length - 1; i >= 0; i--) {
+                if (elapsed >= messages[i].time) {
+                    currentMessage.textContent = messages[i].text;
+                    break;
+                }
+            }
+            
+            // Aplicar efecto de alejamiento al logo en los últimos 5 segundos
+            if (progress > 85) {
+                logo.classList.add('animate');
+            }
+            
+            // Redireccionar cuando termine el tiempo
+            if (elapsed >= totalTime) {
+                window.location.href = 'codigo.html';
+            } else {
+                setTimeout(updateProgress, 100);
+            }
+        }
+        
+        // Iniciar la animación de progreso
+        updateProgress();
+    </script>
+</body>
+</html>
