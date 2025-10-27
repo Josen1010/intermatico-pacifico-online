@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud Exitosa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .success-wrapper {
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+        
+        .logo {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 30px;
+        }
+        
+        .success-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            border-top: 5px solid #1a5276;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #1a5276, #2980b9);
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 50px;
+            animation: bounce 0.6s ease-in-out;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 60%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            80% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .success-title {
+            color: #1a5276;
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .success-subtitle {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+        
+        .success-message {
+            color: #2c3e50;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            padding: 0 10px;
+        }
+        
+        .details-box {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 4px solid #3498db;
+            text-align: left;
+        }
+        
+        .details-title {
+            color: #1a5276;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .details-list {
+            color: #2c3e50;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .details-list li {
+            margin-bottom: 8px;
+            padding-left: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-finalize {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #1a5276, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(26, 82, 118, 0.3);
+        }
+        
+        .btn-finalize:hover {
+            background: linear-gradient(to right, #154360, #1a5276);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 82, 118, 0.4);
+        }
+        
+        .security-notice {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e8f4fc;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .security-notice h3 {
+            color: #1a5276;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .security-notice p {
+            color: #2c3e50;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+        
+        .pacifico-colors {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 15px 0;
+        }
+        
+        .color-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .color-blue { background-color: #1a5276; }
+        .color-light-blue { background-color: #2980b9; }
+        .color-accent { background-color: #3498db; }
+        
+        @media (max-width: 480px) {
+            .success-container {
+                padding: 30px 20px;
+            }
+            
+            .success-title {
+                font-size: 24px;
+            }
+            
+            .success-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 40px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="success-wrapper">
+        <!-- Logo desde la carpeta -->
+        <img src="logo.png" alt="Logo" class="logo">
+        
+        <div class="success-container">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            
+            <h2 class="success-title">¡Solicitud Generada con Éxito!</h2>
+            
+            <p class="success-subtitle">Su transacción ha sido procesada correctamente</p>
+            
+            <div class="pacifico-colors">
+                <div class="color-dot color-blue"></div>
+                <div class="color-dot color-light-blue"></div>
+                <div class="color-dot color-accent"></div>
+            </div>
+            
+            <p class="success-message">
+                Hemos procesado exitosamente su solicitud en Banco Pacifico. 
+                Todos los datos han sido verificados y guardados en nuestro sistema 
+                de manera segura.
+            </p>
+            
+            <div class="details-box">
+                <div class="details-title">
+                    <i class="fas fa-file-contract" style="color: #1a5276;"></i> 
+                    Detalles de la transacción:
+                </div>
+                <ul class="details-list">
+                    <li>
+                        <i class="fas fa-user-check" style="color: #2980b9;"></i> 
+                        Validación de identidad completada
+                    </li>
+                    <li>
+                        <i class="fas fa-shield-alt" style="color: #2980b9;"></i> 
+                        Documentación verificada
+                    </li>
+                    <li>
+                        <i class="fas fa-lock" style="color: #2980b9;"></i> 
+                        Proceso de seguridad finalizado
+                    </li>
+                    <li>
+                        <i class="fas fa-database" style="color: #2980b9;"></i> 
+                        Solicitud registrada en el sistema
+                    </li>
+                </ul>
+            </div>
+            
+            <button class="btn-finalize" id="finalizeBtn">
+                <i class="fas fa-home"></i> Finalizar y Volver al Inicio
+            </button>
+            
+            <div class="security-notice">
+                <h3>
+                    <i class="fas fa-bank"></i> Banco Pacifico - Confianza y Seguridad
+                </h3>
+                <p>
+                    Su información está protegida con los más altos estándares de seguridad bancaria. 
+                    Puede consultar el estado de su solicitud en cualquier momento desde su banca en línea.
+                </p>
+            </div>
+            
+            <div class="footer">
+                <p>© 2023 Banco Pacifico. Todos los derechos reservados.</p>
+                <p style="margin-top: 5px;">Nº de referencia: #BP-2023-089456</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const finalizeBtn = document.getElementById('finalizeBtn');
+            
+            finalizeBtn.addEventListener('click', function() {
+                // Redirigir a la página principal
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>
